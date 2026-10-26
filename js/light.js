@@ -46,4 +46,21 @@ function changeColor() {
 }
 
 // 开启计时器
-window.onload = setInterval(changeColor, 1000);
+let colorTimer = null;
+const colorMotionQuery = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+function syncColorTimer() {
+  const active = document.documentElement.getAttribute('data-theme') === 'dark'
+    && !document.hidden && !(colorMotionQuery && colorMotionQuery.matches);
+  if (active && colorTimer === null) {
+    changeColor();
+    colorTimer = window.setInterval(changeColor, 1200);
+  } else if (!active && colorTimer !== null) {
+    window.clearInterval(colorTimer);
+    colorTimer = null;
+    changeColor();
+  }
+}
+new MutationObserver(syncColorTimer).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+document.addEventListener('visibilitychange', syncColorTimer);
+if (colorMotionQuery && colorMotionQuery.addEventListener) colorMotionQuery.addEventListener('change', syncColorTimer);
+syncColorTimer();

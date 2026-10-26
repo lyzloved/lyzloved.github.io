@@ -98,3 +98,9 @@
   background-color: #3eb8be;
   border-radius: 8px;
 }
+
+/* Reduced motion: stop continuous animated gradients. */
+@media (prefers-reduced-motion: reduce) {
+  #aside-content > .card-widget.card-info { animation: none !important; }
+  html { scroll-behavior: auto !important; }
+}

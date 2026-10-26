@@ -38,7 +38,7 @@ window.addEventListener('load', () => {
   const searchClickFnOnce = () => {
     document.querySelector('#local-search .search-close-button').addEventListener('click', closeSearch)
     $searchMask.addEventListener('click', closeSearch)
-    if (GLOBAL_CONFIG.localSearch.preload) dataObj = fetchData(GLOBAL_CONFIG.localSearch.path)
+    // Index is fetched on first search, not at page load.
   }
 
   // check url is json or not
@@ -73,7 +73,7 @@ window.addEventListener('load', () => {
   }
 
   const search = () => {
-    if (!GLOBAL_CONFIG.localSearch.preload) {
+    if (!dataObj || typeof dataObj.then !== 'function') {
       dataObj = fetchData(GLOBAL_CONFIG.localSearch.path)
     }
 
